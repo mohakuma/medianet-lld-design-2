@@ -1,15 +1,13 @@
-package main.java.lld.services;
+package lld.services;
 
-import main.java.lld.enums.EventStatus;
-import main.java.lld.models.Event;
-import main.java.lld.models.Interval;
-import main.java.lld.models.User;
+import lld.enums.EventStatus;
+import lld.models.Event;
+import lld.models.Interval;
+import lld.models.User;
 
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -35,30 +33,40 @@ public class EventManager {
         eventList.add(crratedEvent);
 
         for(User participant: participants) {
-            Map<Long, Set<Integer>> participantMap = participant.getCalender().getStartTimeToEventIdSetMap();
-            if(participantMap.containsKey(timeSlot.getStartTime())) {
-                participantMap.get(timeSlot.getStartTime()).add(crratedEvent.getId());
-            } else {
-                Set<Integer> eventSet = new HashSet<>();
-                eventSet.add(crratedEvent.getId());
+            Set<Event> participantsEvents = participant.getCalender().getAllEvents();
+            participantsEvents.add(crratedEvent);
 
-                participantMap.put(timeSlot.getStartTime(), eventSet);
-            }
+
+//            Map<Long, Set<Integer>> participantMap = participant.getCalender().getStartTimeToEventIdSetMap();
+//            if(participantMap.containsKey(timeSlot.getStartTime())) {
+//                participantMap.get(timeSlot.getStartTime()).add(crratedEvent.getId());
+//            } else {
+//                Set<Integer> eventSet = new HashSet<>();
+//                eventSet.add(crratedEvent.getId());
+//
+//                participantMap.put(timeSlot.getStartTime(), eventSet);
+//            }
         }
 
         // add event to onwer calender
-        Map<Long, Set<Integer>> ownerMap = owner.getCalender().getStartTimeToEventIdSetMap();
-        if(ownerMap.containsKey(timeSlot.getStartTime())) {
-            ownerMap.get(timeSlot.getStartTime()).add(crratedEvent.getId());
-        } else {
-            Set<Integer> eventSet = new HashSet<>();
-            eventSet.add(crratedEvent.getId());
+        Set<Event> ownerEvents = owner.getCalender().getAllEvents();
+        ownerEvents.add(crratedEvent);
 
-            ownerMap.put(timeSlot.getStartTime(), eventSet);
-        }
+        // mark event accepted for the owner
+        crratedEvent.getUserIdToEventStatus().put(owner.getId(), EventStatus.ACCEPTED);
 
-        // owner always accepts the invite
-        owner.getCalender().getBookedslots().add(timeSlot);
+//        Map<Long, Set<Integer>> ownerMap = owner.getCalender().getStartTimeToEventIdSetMap();
+//        if(ownerMap.containsKey(timeSlot.getStartTime())) {
+//            ownerMap.get(timeSlot.getStartTime()).add(crratedEvent.getId());
+//        } else {
+//            Set<Integer> eventSet = new HashSet<>();
+//            eventSet.add(crratedEvent.getId());
+//
+//            ownerMap.put(timeSlot.getStartTime(), eventSet);
+//        }
+//
+//        // owner always accepts the invite
+//        owner.getCalender().getBookedslots().add(timeSlot);
         printEvent(crratedEvent);
         return crratedEvent;
     }

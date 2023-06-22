@@ -1,4 +1,4 @@
-package main.java.lld.models;
+package lld.models;
 
 import lombok.Builder;
 import lombok.Getter;
@@ -8,6 +8,6 @@ import lombok.Setter;
 @Setter
 @Builder
 public class Interval {
-    private long startTime;
-    private long endTime;
+    private Long startTime;
+    private Long endTime;
 }

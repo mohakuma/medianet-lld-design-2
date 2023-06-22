@@ -1,4 +1,4 @@
-package main.java.lld.enums;
+package lld.enums;
 
 public enum EventStatus {
     ACCEPTED,

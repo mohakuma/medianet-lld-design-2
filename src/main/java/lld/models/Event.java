@@ -1,9 +1,9 @@
-package main.java.lld.models;
+package lld.models;
 
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
-import main.java.lld.enums.EventStatus;
+import lld.enums.EventStatus;
 
 import java.util.HashMap;
 import java.util.List;

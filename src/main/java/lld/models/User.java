@@ -1,4 +1,4 @@
-package main.java.lld.models;
+package lld.models;
 
 import lombok.Builder;
 import lombok.Getter;
